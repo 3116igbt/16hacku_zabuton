@@ -19,7 +19,7 @@ Therefore, please enter the command ```$ npm install ```.
 * [amCharts](https://www.amcharts.com/)
 
 ### mbed
-All requirement libraries are exists in [https://developer.mbed.org](https://developer.mbed.org)  
+All requirement libraries are exist in [https://developer.mbed.org](https://developer.mbed.org)  
 
 mbed1_main.cpp
 * ADXL345_I2C.h
