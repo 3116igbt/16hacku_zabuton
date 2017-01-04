@@ -1,0 +1,9 @@
+{
+  "name": "iotcushon_server",
+  "version": "0.0.0",
+  "description": "iotcushon_server",
+  "main": "server.js",
+  "author": {
+    "name": "TACHIBANA"
+  }
+}

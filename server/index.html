@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>†漆黒からの解放†</title>
+
+        <!--スタイルシート-->  
+        <link href="css/bootstrap.min.css" rel="stylesheet">   
+        <link rel="stylesheet" type="text/css" href="css/style.css"/> 
+        <link href="./font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <!--JavaScript-->
+        <script type="text/javascript" src="./js/common/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="./js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="./js/amcharts/serial.js"></script>
+        <script type="text/javascript" src="./js/common/jquery-ui.min.js"></script>  
+        <script type="text/javascript" src="./js/common/encoding.min.js"></script>
+        <script type="text/javascript" src="./js/update.js"></script>
+        <script type="text/javascript" src="./js/utility.js"></script>
+        <script language="JavaScript"> 
+          // setInterval("myTimeprev()",1000);
+          $(document).ready(function () {
+            hsize = $(window).height();
+            $("#wrap").css("height", hsize + "px");
+          });
+          $(window).resize(function () {
+            hsize = $(window).height();
+            $("#wrap").css("height", hsize + "px");
+          });
+          $(document).ready(function () {
+            hsize = $(window).height();
+            $("#main_container").css("height", hsize + "px");
+          });
+          $(window).resize(function () {
+            hsize = $(window).height();
+            $("#main_container").css("height", hsize + "px");
+          });
+        </script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> 
+        <script type="text/javascript">
+        $(function() {
+          var socket = io.connect();
+          socket.on('chart', function(data){
+            var chartData = JSON.parse(data);
+            console.log(chartData);
+            update_iraira(chartData);
+            // update_zabuton(chartData);
+
+          });
+
+          $('#start_btn').click(function () {
+            socket.emit("start", "Hello socketIO");
+          });
+            
+          socket.on('frustvalue', function(data){
+            var putData= data;
+            console.log('recv frust'+ putData);
+            $("#irritate_value .emp").text(putData + '%');
+          });
+      
+          $('#test_btn').click(function () {
+            // 10分前から現在までの振動データを取得するクエリを作成
+            var diff_min = 10;
+            var query1 = make_iraira_query(diff_min);
+            // var query2 = make_zabuton_query(diff_min);
+
+            socket.emit("sql", query1)
+            // socket.emit("sql", query2);
+          });
+          $('#stop_btn').click(function () {
+            socket.emit("stop", "Hello socketIO");
+          });
+        });
+        </script>
+
+        <!-- 30秒ごとにクエリを実行 -->
+        <script type="text/javascript">
+          // var query1 = make_iraira_query();
+          // setInterval(socket.emit("sql", query1), 30000);
+          // var diff_min = 10;
+          // setInterval("change_iraira(diff_min)", 30000);
+          // var time_flag = setInterval("change_zabuton(diff_min)", 2000);
+
+
+        </script>
+
+        <!-- ポップアップ -->
+        <script type="text/javascript">
+        /*
+          $('#member').on({
+            'mouseenter': function(){
+            $(this).find('div').stop(true, true).slideDown();
+          },
+         'mouseleave': function(){
+            $(this).find('div').stop(true, true).slideUp();
+            }
+          });
+        */
+        </script>
+    </head>
+
+    <body>
+      <div id="wrap">
+        <div id="main_container" class="container">
+          <h1>†漆黒からの解放†</h1>
+          <div id="first_row" class="row">
+            <div id="sittime_container" class="col-lg-6 border">
+              <p id="sittime_value">現在の着座時間は&nbsp;&nbsp;<span class="emp">8時間22分</span>&nbsp;&nbsp;です</p>
+            </div>
+            <div id="irritate_container" class="col-lg-6 border">
+              <p id="irritate_value">現在のイライラ度は&nbsp;&nbsp;<span class="emp">80%</span>&nbsp;&nbsp;です</p>
+            </div>
+          </div>
+          <div id="second_row" class="row"> 
+            <div id="main" class="col-lg-12 border">
+              <div id="graph-container">
+                <div id="worktime_chart">グラフ</div>
+              </div>
+            </div>
+          </div>
+          <div id="control_zabuton_container">
+            <input id="start_btn" type="button" class="btn btn-primary btn-lg" value="動かす" onclick=""/>
+            <input id="stop_btn" type="button" class="btn btn-primary btn-lg" value="止める" onclick=""/>
+            <input id="test_btn" type="button" class="btn btn-primary btn-lg" value="グラフ表示" onclick=""/>
+          </div>
+          <div id="footer" class="row">
+            <div id="member" class="circle col-lg-4 footer_contents">
+            <p>メンバー紹介</p></div> 
+            <div id="review" class="circle col-lg-4 footer_contents"><p>解放された人々</p></div> 
+            <div id="tomato_stress" class="circle col-lg-4 footer_contents"><p>トマトのストレス</p><div>
+            <!-- 
+            <div class="col-lg-4 footer_contents border"><img src="./img/member.png" class="img-responsive center-block"></div> 
+            <div class="col-lg-4 footer_contents border"><img src="./img/member.png" class="img-responsive center-block"></div> 
+            <div class="col-lg-4 footer_contents border"><img src="./img/member.png" class="img-responsive center-block"><div>
+             -->
+          </div>
+        </div>
+      </div>
+    </body>
+</html>
+      
+      
